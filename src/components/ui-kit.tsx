@@ -42,7 +42,7 @@ export function StatCard({
   value: string | number;
   unit?: string;
   trend?: string;
-  tone?: "primary" | "accent" | "port" | "rail" | "road" | "cargo" | "pax";
+  tone?: "primary" | "accent" | "air" | "port" | "rail" | "road" | "cargo" | "pax";
 }) {
   return (
     <div className="panel relative overflow-hidden p-5">
