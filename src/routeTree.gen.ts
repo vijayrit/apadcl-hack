@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ScenariosRouteImport } from './routes/scenarios'
 import { Route as RoutesRouteImport } from './routes/routes'
+import { Route as MethodologyRouteImport } from './routes/methodology'
 import { Route as FreightRouteImport } from './routes/freight'
 import { Route as AirportsRouteImport } from './routes/airports'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const ScenariosRoute = ScenariosRouteImport.update({
 const RoutesRoute = RoutesRouteImport.update({
   id: '/routes',
   path: '/routes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MethodologyRoute = MethodologyRouteImport.update({
+  id: '/methodology',
+  path: '/methodology',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FreightRoute = FreightRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/airports': typeof AirportsRoute
   '/freight': typeof FreightRoute
+  '/methodology': typeof MethodologyRoute
   '/routes': typeof RoutesRoute
   '/scenarios': typeof ScenariosRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/airports': typeof AirportsRoute
   '/freight': typeof FreightRoute
+  '/methodology': typeof MethodologyRoute
   '/routes': typeof RoutesRoute
   '/scenarios': typeof ScenariosRoute
 }
@@ -60,21 +68,36 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/airports': typeof AirportsRoute
   '/freight': typeof FreightRoute
+  '/methodology': typeof MethodologyRoute
   '/routes': typeof RoutesRoute
   '/scenarios': typeof ScenariosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/airports' | '/freight' | '/routes' | '/scenarios'
+  fullPaths:
+    | '/'
+    | '/airports'
+    | '/freight'
+    | '/methodology'
+    | '/routes'
+    | '/scenarios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/airports' | '/freight' | '/routes' | '/scenarios'
-  id: '__root__' | '/' | '/airports' | '/freight' | '/routes' | '/scenarios'
+  to: '/' | '/airports' | '/freight' | '/methodology' | '/routes' | '/scenarios'
+  id:
+    | '__root__'
+    | '/'
+    | '/airports'
+    | '/freight'
+    | '/methodology'
+    | '/routes'
+    | '/scenarios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AirportsRoute: typeof AirportsRoute
   FreightRoute: typeof FreightRoute
+  MethodologyRoute: typeof MethodologyRoute
   RoutesRoute: typeof RoutesRoute
   ScenariosRoute: typeof ScenariosRoute
 }
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/routes'
       fullPath: '/routes'
       preLoaderRoute: typeof RoutesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/methodology': {
+      id: '/methodology'
+      path: '/methodology'
+      fullPath: '/methodology'
+      preLoaderRoute: typeof MethodologyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/freight': {
@@ -123,6 +153,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AirportsRoute: AirportsRoute,
   FreightRoute: FreightRoute,
+  MethodologyRoute: MethodologyRoute,
   RoutesRoute: RoutesRoute,
   ScenariosRoute: ScenariosRoute,
 }
