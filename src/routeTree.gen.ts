@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ScenariosRouteImport } from './routes/scenarios'
 import { Route as RoutesRouteImport } from './routes/routes'
 import { Route as MethodologyRouteImport } from './routes/methodology'
@@ -16,6 +17,11 @@ import { Route as FreightRouteImport } from './routes/freight'
 import { Route as AirportsRouteImport } from './routes/airports'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosRoute = ScenariosRouteImport.update({
   id: '/scenarios',
   path: '/scenarios',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/methodology': typeof MethodologyRoute
   '/routes': typeof RoutesRoute
   '/scenarios': typeof ScenariosRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/methodology': typeof MethodologyRoute
   '/routes': typeof RoutesRoute
   '/scenarios': typeof ScenariosRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/methodology': typeof MethodologyRoute
   '/routes': typeof RoutesRoute
   '/scenarios': typeof ScenariosRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,8 +90,16 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/routes'
     | '/scenarios'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/airports' | '/freight' | '/methodology' | '/routes' | '/scenarios'
+  to:
+    | '/'
+    | '/airports'
+    | '/freight'
+    | '/methodology'
+    | '/routes'
+    | '/scenarios'
+    | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
@@ -91,6 +108,7 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/routes'
     | '/scenarios'
+    | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -100,10 +118,18 @@ export interface RootRouteChildren {
   MethodologyRoute: typeof MethodologyRoute
   RoutesRoute: typeof RoutesRoute
   ScenariosRoute: typeof ScenariosRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios': {
       id: '/scenarios'
       path: '/scenarios'
@@ -156,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   MethodologyRoute: MethodologyRoute,
   RoutesRoute: RoutesRoute,
   ScenariosRoute: ScenariosRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
