@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dpr_projects: {
+        Row: {
+          answers: Json
+          business_name: string
+          computed: Json
+          created_at: string
+          id: string
+          narrative: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          business_name?: string
+          computed?: Json
+          created_at?: string
+          id?: string
+          narrative?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          business_name?: string
+          computed?: Json
+          created_at?: string
+          id?: string
+          narrative?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      otp_codes: {
+        Row: {
+          attempts: number
+          code_hash: string
+          consumed: boolean
+          created_at: string
+          expires_at: string
+          id: string
+          phone: string
+        }
+        Insert: {
+          attempts?: number
+          code_hash: string
+          consumed?: boolean
+          created_at?: string
+          expires_at: string
+          id?: string
+          phone: string
+        }
+        Update: {
+          attempts?: number
+          code_hash?: string
+          consumed?: boolean
+          created_at?: string
+          expires_at?: string
+          id?: string
+          phone?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          district: string | null
+          full_name: string | null
+          id: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          district?: string | null
+          full_name?: string | null
+          id: string
+          phone: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          district?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
