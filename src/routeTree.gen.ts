@@ -10,41 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ScenariosRouteImport } from './routes/scenarios'
-import { Route as RoutesRouteImport } from './routes/routes'
-import { Route as MethodologyRouteImport } from './routes/methodology'
-import { Route as FreightRouteImport } from './routes/freight'
-import { Route as AirportsRouteImport } from './routes/airports'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ScenariosRoute = ScenariosRouteImport.update({
-  id: '/scenarios',
-  path: '/scenarios',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoutesRoute = RoutesRouteImport.update({
-  id: '/routes',
-  path: '/routes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MethodologyRoute = MethodologyRouteImport.update({
-  id: '/methodology',
-  path: '/methodology',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FreightRoute = FreightRouteImport.update({
-  id: '/freight',
-  path: '/freight',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AirportsRoute = AirportsRouteImport.update({
-  id: '/airports',
-  path: '/airports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,69 +25,27 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/airports': typeof AirportsRoute
-  '/freight': typeof FreightRoute
-  '/methodology': typeof MethodologyRoute
-  '/routes': typeof RoutesRoute
-  '/scenarios': typeof ScenariosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/airports': typeof AirportsRoute
-  '/freight': typeof FreightRoute
-  '/methodology': typeof MethodologyRoute
-  '/routes': typeof RoutesRoute
-  '/scenarios': typeof ScenariosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/airports': typeof AirportsRoute
-  '/freight': typeof FreightRoute
-  '/methodology': typeof MethodologyRoute
-  '/routes': typeof RoutesRoute
-  '/scenarios': typeof ScenariosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/airports'
-    | '/freight'
-    | '/methodology'
-    | '/routes'
-    | '/scenarios'
-    | '/sitemap.xml'
+  fullPaths: '/' | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/airports'
-    | '/freight'
-    | '/methodology'
-    | '/routes'
-    | '/scenarios'
-    | '/sitemap.xml'
-  id:
-    | '__root__'
-    | '/'
-    | '/airports'
-    | '/freight'
-    | '/methodology'
-    | '/routes'
-    | '/scenarios'
-    | '/sitemap.xml'
+  to: '/' | '/sitemap.xml'
+  id: '__root__' | '/' | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AirportsRoute: typeof AirportsRoute
-  FreightRoute: typeof FreightRoute
-  MethodologyRoute: typeof MethodologyRoute
-  RoutesRoute: typeof RoutesRoute
-  ScenariosRoute: typeof ScenariosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -128,41 +56,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/scenarios': {
-      id: '/scenarios'
-      path: '/scenarios'
-      fullPath: '/scenarios'
-      preLoaderRoute: typeof ScenariosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/routes': {
-      id: '/routes'
-      path: '/routes'
-      fullPath: '/routes'
-      preLoaderRoute: typeof RoutesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/methodology': {
-      id: '/methodology'
-      path: '/methodology'
-      fullPath: '/methodology'
-      preLoaderRoute: typeof MethodologyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/freight': {
-      id: '/freight'
-      path: '/freight'
-      fullPath: '/freight'
-      preLoaderRoute: typeof FreightRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/airports': {
-      id: '/airports'
-      path: '/airports'
-      fullPath: '/airports'
-      preLoaderRoute: typeof AirportsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -177,11 +70,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AirportsRoute: AirportsRoute,
-  FreightRoute: FreightRoute,
-  MethodologyRoute: MethodologyRoute,
-  RoutesRoute: RoutesRoute,
-  ScenariosRoute: ScenariosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
