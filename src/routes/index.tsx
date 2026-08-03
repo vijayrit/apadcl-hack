@@ -1,233 +1,102 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  BarChart, Bar, CartesianGrid, Legend,
-} from "recharts";
-import { ArrowRight, Plane, Truck, Ship, Train } from "lucide-react";
-import { PageHeader, Panel, StatCard } from "@/components/ui-kit";
-import { airports, freightForecast, paxForecast, fmt } from "@/lib/mock-data";
+import { FileSpreadsheet, FileText, FileType2, ShieldCheck, Smartphone, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Overview · AP Freight & Mobility Intelligence" },
-      {
-        name: "description",
-        content:
-          "Unified command center for Andhra Pradesh: passenger and cargo demand forecasts across air, road, rail and ports.",
-      },
+      { title: "AP MSME DPR Portal — Build a bankable project report" },
+      { name: "description", content: "Andhra Pradesh MSME entrepreneurs answer guided questions and get a bankable Detailed Project Report with cost, finance and 5-year projections — downloadable as PDF, Excel or Word." },
+      { property: "og:title", content: "AP MSME DPR Portal — Build a bankable project report" },
+      { property: "og:description", content: "Login with your mobile number, answer questions about your business, download a bank-ready DPR." },
     ],
   }),
-  component: OverviewPage,
+  component: Landing,
 });
 
-function OverviewPage() {
-  const totalPax2035 = airports.reduce(
-    (s, a) => s + paxForecast(a.code).find((r) => r.year === 2035)!.forecast,
-    0,
-  );
-  const freight = freightForecast();
-  const f2024 = freight.find((r) => r.year === 2024)!;
-  const f2047 = freight.find((r) => r.year === 2047)!;
-  const total24 = f2024.road + f2024.rail + f2024.port;
-  const total47 = f2047.road + f2047.rail + f2047.port;
+const STEPS = [
+  { n: "01", title: "Login with your mobile", body: "Enter your 10-digit number and the OTP. No passwords, no paperwork." },
+  { n: "02", title: "Answer guided questions", body: "Six short sections: promoter, enterprise, market, project cost, operating costs and finance." },
+  { n: "03", title: "Download your DPR", body: "Project cost, means of finance, 5-year P&L, DSCR and break-even — as PDF, Excel or Word." },
+];
 
+function Landing() {
   return (
     <>
-      <PageHeader
-        eyebrow="Command Center"
-        title="One platform. Every mode. Andhra Pradesh 2047."
-        description="A unified AI decision-support layer that merges APADCL's aviation forecasting mandate with APMB's multimodal freight intelligence — shared data pipeline, shared scenario engine, shared visual grammar."
-        actions={
-          <>
-            <Link
-              to="/airports"
-              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
-            >
-              <Plane className="h-4 w-4" /> Aviation
+      <section className="grid gap-10 py-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+        <div>
+          <span className="chip">Government of Andhra Pradesh · MSME support</span>
+          <h1 className="mt-5 text-4xl leading-[1.05] md:text-6xl">
+            A bankable project report for your enterprise,
+            <em className="text-[color:var(--clay)]"> without a consultant.</em>
+          </h1>
+          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+            Answer plain questions about your business. The portal assembles a Detailed Project
+            Report your bank recognises — project cost, means of finance, five-year profitability,
+            DSCR and break-even — ready to download.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link to="/auth" className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm text-primary-foreground">
+              <Smartphone className="h-4 w-4" /> Login with mobile OTP
             </Link>
-            <Link
-              to="/freight"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/60 px-3.5 py-2 text-sm font-medium hover:bg-secondary"
-            >
-              <Truck className="h-4 w-4" /> Freight
+            <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-md border border-input px-5 py-2.5 text-sm hover:bg-secondary">
+              My projects
             </Link>
-          </>
-        }
-      />
-
-      <div className="grid gap-4 md:grid-cols-4">
-        <StatCard label="Airports covered" value={airports.length} unit="6 live · 4 upcoming" tone="pax" trend="APADCL mandate · horizon 2035" />
-        <StatCard label="Pax @ 2035" value={fmt(totalPax2035, 1)} unit="mn PAX" tone="air" trend="Sum of forecast across all AP airports" />
-        <StatCard label="Freight @ 2024" value={fmt(total24, 0)} unit="mn tonnes" tone="cargo" trend="Road + Rail + Ports baseline" />
-        <StatCard label="Freight @ 2047" value={fmt(total47, 0)} unit="mn tonnes" tone="port" trend={`${((total47 / total24 - 1) * 100).toFixed(0)}% growth · APMB horizon`} />
-      </div>
-
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
-        <Panel
-          title="Statewide freight demand — modal split"
-          subtitle="Historical + AI forecast, mn tonnes / year"
-          className="lg:col-span-2"
-        >
-          <div className="h-72">
-            <ResponsiveContainer>
-              <AreaChart data={freight}>
-                <defs>
-                  <linearGradient id="g-road" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="var(--road)" stopOpacity={0.7} />
-                    <stop offset="100%" stopColor="var(--road)" stopOpacity={0.05} />
-                  </linearGradient>
-                  <linearGradient id="g-rail" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="var(--rail)" stopOpacity={0.7} />
-                    <stop offset="100%" stopColor="var(--rail)" stopOpacity={0.05} />
-                  </linearGradient>
-                  <linearGradient id="g-port" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="var(--port)" stopOpacity={0.7} />
-                    <stop offset="100%" stopColor="var(--port)" stopOpacity={0.05} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="var(--border)" strokeDasharray="2 4" vertical={false} />
-                <XAxis dataKey="year" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip
-                  contentStyle={{
-                    background: "var(--card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Area type="monotone" dataKey="road" stroke="var(--road)" fill="url(#g-road)" stackId="1" />
-                <Area type="monotone" dataKey="rail" stroke="var(--rail)" fill="url(#g-rail)" stackId="1" />
-                <Area type="monotone" dataKey="port" stroke="var(--port)" fill="url(#g-port)" stackId="1" />
-              </AreaChart>
-            </ResponsiveContainer>
           </div>
-        </Panel>
-
-        <Panel title="Requirement fit" subtitle="Common vs unique">
-          <div className="space-y-4 text-sm">
-            <div>
-              <div className="mono mb-2 text-[10px] uppercase tracking-[0.18em] text-primary">
-                Shared spine
-              </div>
-              <ul className="space-y-1.5 text-muted-foreground">
-                <li>· Continuous, explainable demand forecasting</li>
-                <li>· Scenario modelling for policy interventions</li>
-                <li>· Public-data-only, replicable methodology</li>
-                <li>· PDF / Excel export & dashboards</li>
-                <li>· District-level socio-economic drivers</li>
-              </ul>
-            </div>
-            <div>
-              <div className="mono mb-2 text-[10px] uppercase tracking-[0.18em]" style={{ color: "var(--air)" }}>
-                APADCL only
-              </div>
-              <ul className="space-y-1.5 text-muted-foreground">
-                <li>· Horizon 2035, 15 airports</li>
-                <li>· 80% terminal capacity threshold alert</li>
-                <li>· Domestic & international route recommender</li>
-              </ul>
-            </div>
-            <div>
-              <div className="mono mb-2 text-[10px] uppercase tracking-[0.18em]" style={{ color: "var(--road)" }}>
-                APMB only
-              </div>
-              <ul className="space-y-1.5 text-muted-foreground">
-                <li>· Horizon 2047, Road + Rail + Ports</li>
-                <li>· Commodity- & corridor-wise flows</li>
-                <li>· Multimodal shift & evacuation planning</li>
-              </ul>
-            </div>
+          <div className="mt-6 flex flex-wrap gap-4 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" /> PDF</span>
+            <span className="inline-flex items-center gap-1.5"><FileSpreadsheet className="h-3.5 w-3.5" /> Excel</span>
+            <span className="inline-flex items-center gap-1.5"><FileType2 className="h-3.5 w-3.5" /> Word</span>
+            <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5" /> Your data stays in your account</span>
           </div>
-        </Panel>
-      </div>
+        </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {[
-          { icon: Plane, label: "Air", to: "/airports", desc: "Passenger + air cargo forecasts, terminal-capacity alerts.", token: "air" as const },
-          { icon: Truck, label: "Road", to: "/freight", desc: "FASTag + e-Way Bill signals, NH corridor tonnage.", token: "road" as const },
-          { icon: Train, label: "Rail", to: "/freight", desc: "FOIS rail freight flows, modal-shift opportunities.", token: "rail" as const },
-          { icon: Ship,  label: "Ports", to: "/freight", desc: "Port cargo throughput, hinterland evacuation.", token: "port" as const },
-        ].map(({ icon: Icon, label, to, desc, token }) => (
-          <Link
-            key={label}
-            to={to}
-            className="panel group relative overflow-hidden p-5 transition hover:-translate-y-0.5 hover:shadow-glow"
-          >
-            <div
-              className="absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-20 blur-2xl"
-              style={{ background: `var(--${token})` }}
-            />
-            <Icon className="h-5 w-5" style={{ color: `var(--${token})` }} />
-            <div className="mt-3 font-display text-lg font-semibold">{label}</div>
-            <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
-            <div className="mt-4 flex items-center gap-1 text-xs text-primary opacity-0 transition group-hover:opacity-100">
-              Open <ArrowRight className="h-3 w-3" />
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <Panel title="Pilot airports — hindcast vs forecast" subtitle="POC scope: Vijayawada & Tirupati, target hindcast ≥ 85%">
-          <div className="h-64">
-            <ResponsiveContainer>
-              <BarChart
-                data={[
-                  { year: 2021, VGA_actual: 0.9, VGA_forecast: 0.92, TIR_actual: 1.2, TIR_forecast: 1.24 },
-                  { year: 2022, VGA_actual: 1.05, VGA_forecast: 1.02, TIR_actual: 1.38, TIR_forecast: 1.42 },
-                  { year: 2023, VGA_actual: 1.22, VGA_forecast: 1.20, TIR_actual: 1.60, TIR_forecast: 1.58 },
-                  { year: 2024, VGA_actual: 1.42, VGA_forecast: 1.40, TIR_actual: 1.85, TIR_forecast: 1.82 },
-                ]}
-              >
-                <CartesianGrid stroke="var(--border)" strokeDasharray="2 4" vertical={false} />
-                <XAxis dataKey="year" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="VGA_actual" name="Vijayawada · actual" fill="var(--air)" radius={[3,3,0,0]} />
-                <Bar dataKey="VGA_forecast" name="Vijayawada · model" fill="var(--pax)" radius={[3,3,0,0]} />
-                <Bar dataKey="TIR_actual" name="Tirupati · actual" fill="var(--accent)" radius={[3,3,0,0]} />
-                <Bar dataKey="TIR_forecast" name="Tirupati · model" fill="var(--cargo)" radius={[3,3,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
+        <div className="paper p-6">
+          <div className="mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            Sample output · viability snapshot
           </div>
-          <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
-            <div className="rounded border border-border/60 p-2">
-              <div className="mono text-[10px] uppercase tracking-widest text-muted-foreground">VGA hindcast</div>
-              <div className="mt-1 font-display text-lg">92.4%</div>
-            </div>
-            <div className="rounded border border-border/60 p-2">
-              <div className="mono text-[10px] uppercase tracking-widest text-muted-foreground">TIR hindcast</div>
-              <div className="mt-1 font-display text-lg">94.1%</div>
-            </div>
-          </div>
-        </Panel>
-
-        <Panel title="POC to production" subtitle="How the two mandates converge">
-          <ol className="space-y-3 text-sm text-muted-foreground">
+          <div className="mt-4 space-y-3 text-sm">
             {[
-              ["01", "Unified data lake", "DGCA/AAI · FASTag · e-Way Bill · FOIS · LDB · ICEGATE ingested to one schema."],
-              ["02", "Shared feature store", "District GSDP, tourism, population, industrial parks feed both aviation & freight models."],
-              ["03", "Explainable models", "Ensembles (Prophet, XGBoost, transformer) with SHAP attributions — public-data only."],
-              ["04", "Scenario engine", "Policy levers, CAPEX shocks, modal-shift tests reused across airports, corridors & ports."],
-              ["05", "Decision surface", "This dashboard: capacity thresholds, route recommendations, corridor optimisation, exports."],
-            ].map(([n, h, b]) => (
-              <li key={n} className="flex gap-3">
-                <span className="mono mt-0.5 shrink-0 rounded bg-secondary px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
-                  {n}
-                </span>
-                <div>
-                  <div className="text-foreground">{h}</div>
-                  <div className="text-xs">{b}</div>
-                </div>
-              </li>
+              ["Total project cost", "₹28,40,000"],
+              ["Term loan", "₹19,88,000"],
+              ["Year-1 turnover", "₹42,60,000"],
+              ["Average DSCR", "2.14"],
+              ["Break-even", "58% of Yr-1 sales"],
+              ["Employment created", "7 persons"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex items-baseline justify-between gap-4 border-b border-dashed border-border pb-2">
+                <span className="text-muted-foreground">{k}</span>
+                <span className="mono">{v}</span>
+              </div>
             ))}
-          </ol>
-        </Panel>
-      </div>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Every figure is derived from your answers — nothing is pre-filled in your own report.
+          </p>
+        </div>
+      </section>
+
+      <section className="mt-6 grid gap-4 md:grid-cols-3">
+        {STEPS.map((s) => (
+          <div key={s.n} className="paper p-5">
+            <div className="mono text-xs text-[color:var(--clay)]">{s.n}</div>
+            <h2 className="mt-2 text-xl">{s.title}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{s.body}</p>
+          </div>
+        ))}
+      </section>
+
+      <section className="paper mt-6 flex flex-col items-start gap-4 p-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-2xl">Works for every MSME line of activity</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Manufacturing, food processing, services, trading, handlooms and agri-allied units —
+            with scheme context for PMEGP, Mudra, CGTMSE, PM Vishwakarma and AP MSME incentives.
+          </p>
+        </div>
+        <Link to="/auth" className="inline-flex shrink-0 items-center gap-2 rounded-md bg-[color:var(--clay)] px-5 py-2.5 text-sm text-white">
+          <Sparkles className="h-4 w-4" /> Start my DPR
+        </Link>
+      </section>
     </>
   );
 }
