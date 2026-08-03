@@ -19,7 +19,7 @@ const STEPS = [
   { n: "03", title: "Download your DPR", body: "Project cost, means of finance, 5-year P&L, DSCR and break-even — as PDF, Excel or Word." },
 ];
 
-export default function Landing() {
+function Landing() {
   return (
     <>
       <section className="grid gap-10 py-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
